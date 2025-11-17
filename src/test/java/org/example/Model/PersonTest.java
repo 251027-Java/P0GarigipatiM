@@ -13,13 +13,13 @@ public class PersonTest {
 
     @BeforeAll
     public static void before() {
-        test = new Person("Nancy", "Claire", "Drew", LocalDate.of(1954, Month.MAY,
+        test = new Person(1, "Nancy", "Claire", "Drew", LocalDate.of(1954, Month.MAY,
                 19));
     }
 
     @Test
     public void testPersonCreation() {
-        Person p = new Person("John", "Simmons", LocalDate.of(1966, Month.APRIL, 20));
+        Person p = new Person(2, "John", "Simmons", LocalDate.of(1966, Month.APRIL, 20));
         assertEquals("John", p.getFirstName());
         assertEquals("Simmons", p.getLastName());
         assertEquals(LocalDate.of(1966, Month.APRIL, 20), p.getBirthDate());
@@ -35,5 +35,7 @@ public class PersonTest {
         assertNotEquals("Nancy", test.getFirstName());
 
         assertEquals("Drew", test.getLastName());
+        test.setLastName("Domer");
+        assertEquals("Domer", test.getLastName());
     }
 }

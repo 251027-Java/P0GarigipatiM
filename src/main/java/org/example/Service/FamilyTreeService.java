@@ -1,8 +1,12 @@
 package org.example.Service;
 
 import org.example.DAO.PersonDAO;
+
 import org.example.Model.FamilyTree;
+import org.example.Model.Marriage;
 import org.example.Model.Person;
+
+import java.time.LocalDate;
 
 public class FamilyTreeService {
     // Fields
@@ -26,16 +30,21 @@ public class FamilyTreeService {
     // Add new child to tree
     // parameters: parents, and person object
     public void addChild(Person parent1, Person parent2, Person child) {
+        // TODO: addChild method
         // edit the family tree
     }
 
     // Add marriage relation to family tree
-    public void addSpouse(Person familyPerson, Person spouse) {
-        // edit family tree
+    public void addMarriage(Person familyPerson, Person spouse, LocalDate marriageDate) {
+        // TODO: add input validation
+        Marriage m = new Marriage(familyPerson, spouse, marriageDate);
+        familyPerson.addMarriage(m);
+        spouse.addMarriage(m);
     }
 
     // change marriage into divorced relation
     public void divorceSpouse(Person familyPerson, Person divorced) {
+        // TODO: add divorceSpouse method
         // edit the family tree
     }
 

@@ -2,33 +2,82 @@ package org.example.DAO;
 
 import org.example.Model.Person;
 
-import java.sql.Connection;
+import java.sql.*;
+import java.time.LocalDate;
 
 public class PersonDAO {
     // Fields
+    // TODO: SET DATABASE CONNECTION PARAMS
+    private static final String URL = "";
+    private static final String Username = "";
+    private static final String Password = "";
     Connection connection;
 
     // Constructor
     public PersonDAO() {
         // establish connection to db
+        try {
+            connection = DriverManager.getConnection(URL, Username, Password);
+
+            // create person table
+            try (Statement statement = connection.createStatement()) {
+                String sql = "CREATE TABLE IF NOT EXISTS person (" +
+                                "id INT PRIMARY KEY," +
+                                "firstname VARCHAR(20) NOT NULL," +
+                                "middlename VARCHAR(20) DEFAULT ''," +
+                                "lastname VARCHAR(20) NOT NULL," +
+                                "birthdate DATE NOT NULL" +
+                            ");";
+                statement.execute(sql);
+
+                IO.println("Person table created successfully!");
+            }
+        } catch(SQLException e) {
+            IO.println("Database connection not established or table creation failed.");
+        }
     }
 
     // Methods
 
     // Add new person
     public boolean addPerson(Person person) {
-        // Insert person into person table
-        // Return true if successful
+        String sql = "INSERT INTO person (id, firstname, lastname, birthdate) " +
+                "VALUES (?, ?, ?, ?);";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setInt(1, person.getId());
+            statement.setString(2, person.getFirstName());
+            statement.setString(3, person.getLastName());
+            statement.setDate(4, Date.valueOf(person.getBirthDate()));
+
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            IO.println("Person creation failed!");
+        }
         return false;
     }
 
-    // Get person from first and last name
-    public Person getPerson(String firstName, String lastName) {
-        // TODO: get person by id or some other identifier
+    // Get person from id
+    public Person getPerson(int id) {
+        String sql = "SELECT * FROM person WHERE person.id = ?;";
 
-        // select from person table where first and last name
-        // create new person object and return it
-        // return null if doesn't exist
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+
+            if(rs.next()) {
+                String firstname = rs.getString("firstname");
+                String middlename = rs.getString("middlename");
+                String lastname = rs.getString("lastname");
+                LocalDate birthdate = rs.getDate("birthdate").toLocalDate();
+
+                return new Person(id, firstname, middlename, lastname, birthdate);
+            }
+
+        } catch(SQLException e) {
+            IO.println("getPerson FAILED: Person with that id doesn't exist?");
+        }
         return null;
     }
 
@@ -43,12 +92,17 @@ public class PersonDAO {
     }
 
     // Delete person
-    public Person deletePerson(Person person) {
-        // TODO: change input to id or some other identifier
+    public boolean deletePerson(int id) {
+        String sql = "DELETE FROM person WHERE person.id = ?;";
 
-        // delete in person table where identifier
-        // check that deletion was successful
-        // return deleted person
-        return null;
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return true;
+
+        } catch(SQLException e) {
+            IO.println("Person deletion failed.");
+        }
+        return false;
     }
 }
