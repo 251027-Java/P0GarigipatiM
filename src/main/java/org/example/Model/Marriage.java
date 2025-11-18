@@ -6,14 +6,18 @@ import java.util.List;
 
 public class Marriage {
     // Fields
-    LocalDate marriageDate;
+    private int id;
 
-    boolean activeMarriage;
-    LocalDate divorceDate; // Is null by default
-    List<Person> partners;
+    public LocalDate marriageDate;
+
+    private boolean activeMarriage; //TODO: is this necessary?
+
+    public LocalDate divorceDate; // Is null by default
+    public List<Person> partners;
 
     // Constructor
-    public Marriage(Person person1, Person person2, LocalDate marriageDate) {
+    public Marriage(int id, Person person1, Person person2, LocalDate marriageDate) {
+        this.id = id;
         this.partners = new ArrayList<>();
 
         this.partners.add(person1);
@@ -25,6 +29,9 @@ public class Marriage {
     }
 
     // Methods
+    // getters
+    public int getId() { return this.id; }
+
     // add a partner to the marriage
     public void addPartner(Person person) {
         partners.add(person);

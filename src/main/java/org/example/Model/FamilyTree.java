@@ -2,20 +2,21 @@ package org.example.Model;
 
 public class FamilyTree {
     // Fields
-    Person root;
+    String treeName;
 
     // Constructor
-    public FamilyTree(Person root) {
-        this.root = root;
+    public FamilyTree(String treeName) {
+        this.treeName = treeName;
     }
 
     // Methods
     // print the tree
     public void displayTree() {
-        IO.println("The " + root.getLastName() + " Family Tree");
+        IO.println("The " + treeName + " Family Tree");
         // Start at root, build out family tree
         // should have names, relations, (optional) birth year - death year
         // TODO: add displayTree method
+
     }
 
     // list of persons ancestors

@@ -81,11 +81,18 @@ public class Person {
     @Override
     public String toString() {
         StringBuilder personStr = new StringBuilder(firstName);
+        personStr.append(" ");
         if (!middleName.isEmpty()) {
             personStr.append(middleName.charAt(0)).append(" ");
         }
         personStr.append(lastName);
 
         return new String(personStr);
+    }
+
+    // Returns string representation of the person
+    // the way they would look on a family tree
+    public String personOnTree() {
+        return this.toString() + this.birthday + "-";
     }
 }

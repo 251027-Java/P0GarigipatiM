@@ -14,17 +14,20 @@ public class FamilyTreeService {
     PersonDAO personDAO;
 
     // Constructor
-    public FamilyTreeService() {
-        personDAO = new PersonDAO();
-        startTree();
+    public FamilyTreeService(String treeName) {
+        startTree(treeName);
     }
 
     // Methods
-    private void startTree() {
-        // Get the root person from user
-        Person root = null;
-        familyTree = new FamilyTree(root);
+    private void startTree(String treeName) {
+        // create new schema or load existing schema
+            // create person, marriage, parent_child, and person_to_marriage tables
+            // if necessary
+
+        familyTree = new FamilyTree(treeName); // create new family tree object
+
         // Create person, add to database
+        personDAO = new PersonDAO();
     }
 
     // Add new child to tree
@@ -37,7 +40,7 @@ public class FamilyTreeService {
     // Add marriage relation to family tree
     public void addMarriage(Person familyPerson, Person spouse, LocalDate marriageDate) {
         // TODO: add input validation
-        Marriage m = new Marriage(familyPerson, spouse, marriageDate);
+        Marriage m = new Marriage(-1, familyPerson, spouse, marriageDate);
         familyPerson.addMarriage(m);
         spouse.addMarriage(m);
     }
