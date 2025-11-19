@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Person {
     // Fields
+    // TODO: make id static or auto-increment
     private int id;
     private String firstName;
     private String middleName;

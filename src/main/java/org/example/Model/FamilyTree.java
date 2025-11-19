@@ -2,7 +2,7 @@ package org.example.Model;
 
 public class FamilyTree {
     // Fields
-    String treeName;
+    private String treeName;
 
     // Constructor
     public FamilyTree(String treeName) {
@@ -10,13 +10,14 @@ public class FamilyTree {
     }
 
     // Methods
+    public String name() { return this.treeName; }
+
     // print the tree
     public void displayTree() {
         IO.println("The " + treeName + " Family Tree");
         // Start at root, build out family tree
         // should have names, relations, (optional) birth year - death year
         // TODO: add displayTree method
-
     }
 
     // list of persons ancestors

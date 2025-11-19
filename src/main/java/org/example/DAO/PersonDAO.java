@@ -58,25 +58,26 @@ public class PersonDAO {
         return false;
     }
 
-    // Get person from id
-    public Person getPerson(int id) {
-        String sql = "SELECT * FROM person WHERE person.id = ?;";
+    // Get person from name
+    public Person getPerson(String firstname, String lastname) {
+        String sql = "SELECT * FROM person WHERE person.firstname = ? AND person" +
+                ".lastname = ?;";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setString(1, firstname);
+            statement.setString(2, lastname);
             ResultSet rs = statement.executeQuery();
 
             if(rs.next()) {
-                String firstname = rs.getString("firstname");
+                int id = rs.getInt("id");
                 String middlename = rs.getString("middlename");
-                String lastname = rs.getString("lastname");
                 LocalDate birthdate = rs.getDate("birthdate").toLocalDate();
 
                 return new Person(id, firstname, middlename, lastname, birthdate);
             }
 
         } catch(SQLException e) {
-            IO.println("getPerson FAILED: Person with that id doesn't exist?");
+            IO.println("getPerson FAILED: Person with that name doesn't exist?");
         }
         return null;
     }
