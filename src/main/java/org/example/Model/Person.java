@@ -33,30 +33,39 @@ public class Person {
         this.birthday = birthday;
 
         parents = new ArrayList<>();
+        marriages = new ArrayList<>();
+        children = new ArrayList<>();
     }
 
     public Person(int id, String firstName, String middleName, String lastName,
                   LocalDate birthday) {
-        this.id = id;
-        this.firstName = firstName;
         this.middleName = middleName;
-        this.lastName = lastName;
-        this.birthday = birthday;
+        this(id, firstName, lastName, birthday);
     }
 
     // Methods
 
     // Getters
     public String getFirstName() { return this.firstName; }
+
     public String getMiddleName() { return this.middleName; }
+
     public String getLastName() { return this.lastName; }
+
     public LocalDate getBirthDate() { return this.birthday; }
+
     public int getId() { return this.id; }
 
     // Setters
     public void setFirstName(String firstName) { this.firstName = firstName; }
+
     public void setMiddleName(String middleName) { this.middleName = middleName; }
+
     public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public void addParents(List<Person> parents) {
+        this.parents = parents;
+    }
 
     // Create a marriage
     public void addMarriage(Marriage m) {
@@ -64,11 +73,6 @@ public class Person {
             marriages = new ArrayList<>();
         }
         marriages.add(m);
-    }
-
-    // Create a parent
-    public void addParent(Person person) {
-        parents.add(person);
     }
 
     // Create a child

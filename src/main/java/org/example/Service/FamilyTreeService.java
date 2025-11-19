@@ -6,14 +6,15 @@ import org.example.Model.FamilyTree;
 import org.example.Model.Marriage;
 import org.example.Model.Person;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class FamilyTreeService {
     // Fields
     private FamilyTree ft;
-    private PersonDAO personDAO;
+    private PersonService personService;
 
     // Constructors
     public FamilyTreeService(String tree) {
@@ -23,7 +24,7 @@ public class FamilyTreeService {
     // Methods
     private void setUpDatabase(String tree) {
         ft = new FamilyTree(tree);
-        personDAO = new PersonDAO();
+        personService = new PersonService();
 
         // create schema if doesn't exist
         // create tables if they don't exist
@@ -40,7 +41,7 @@ public class FamilyTreeService {
         // Split into first and last name
         String[] nameSplit = fullName.split(" ");
         String firstname = nameSplit[0];
-        String lastname = nameSplit[1];
+        String lastname = nameSplit[nameSplit.length - 1];
 
         // Check that last name matches the name of the tree
         if(!ft.name().equalsIgnoreCase(lastname)) {
@@ -50,7 +51,7 @@ public class FamilyTreeService {
         }
 
         // Check if this person already exists
-        if(personDAO.getPerson(firstname, lastname) != null) {
+        if(personService.personExists(fullName)) {
             IO.println("This person already exists in the tree.");
             return;
         }
@@ -60,22 +61,20 @@ public class FamilyTreeService {
         // enter parent1 name, enter parent2 name
         IO.println("Please enter the full name of this person's first parent.");
         String parent1Name = scanner.nextLine();
-        nameSplit = parent1Name.split(" ");
-        String parentOneFirst = nameSplit[0];
-        String parentOneLast = nameSplit[1];
 
         IO.println("Please enter the full name of this person's second parent.");
         String parent2Name = scanner.nextLine();
-        nameSplit = parent2Name.split(" ");
-        String parentTwoFirst = nameSplit[0];
-        String parentTwoLast = nameSplit[1];
 
         // Check if the parents exist in the tree
-        if(personDAO.getPerson(parentOneFirst, parentOneLast) == null ||
-                personDAO.getPerson(parentTwoFirst, parentTwoLast) == null) {
+        Person parent1 = personService.getPerson(parent1Name);
+        Person parent2 = personService.getPerson(parent2Name);
+        if(parent1 == null || parent2 == null) {
             IO.println("One or both of this person's parents aren't on the tree. Add them first.");
             return;
         }
+
+        // Make parents list
+        List<Person> parents = List.of(parent1, parent2);
 
         // enter persons date of birth
         IO.println("Please enter date of birth in YYYY-MM-DD format:");
@@ -83,10 +82,8 @@ public class FamilyTreeService {
         LocalDate birthDate = LocalDate.parse(date);
         IO.println(birthDate);
 
-        // use this information to create a new person
-        Person p = new Person(1, fullName.substring(1, 5), fullName, birthDate);
-        // add parents to person object
-        // parent_child dao will add 2 new relations using ids
-        // persondao will add person to table
+        // use this information to create a new person and add them
+        Person p = new Person(1, firstname, lastname, birthDate);
+        personService.addPerson(p, parents);
     }
 }
