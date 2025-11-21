@@ -15,31 +15,33 @@ public class MarriageDAO {
     private final String Schema;
 
     // Constructor
-    public MarriageDAO() {
+    public MarriageDAO(String tree) {
         // establish connection to db
         this.URL = Repo.URL();
         this.Username = Repo.Username();
         this.Password = Repo.Password();
-        this.Schema = Repo.Schema();
+        this.Schema = tree;
     }
 
     // Methods
     // add new marriage
-    public boolean addMarriage(Marriage marriage) {
-        String sql = "INSERT INTO " + Schema + ".marriage (id, startDate) VALUES (?, ?);";
+    public int addMarriage(Marriage marriage) {
+        String sql = "INSERT INTO " + Schema + ".marriage (startDate) VALUES (?);";
 
         try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, marriage.getId());
-                statement.setDate(2, Date.valueOf(marriage.marriageDate));
+            try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setDate(1, Date.valueOf(marriage.marriageDate));
                 statement.executeUpdate();
 
-                return true;
+                ResultSet rs = statement.getGeneratedKeys();
+                if(rs.next()) {
+                    return rs.getInt(1);
+                }
             }
         } catch (SQLException e) {
-            IO.println("Marriage creation failed!");
+            e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     // Get marriage from id

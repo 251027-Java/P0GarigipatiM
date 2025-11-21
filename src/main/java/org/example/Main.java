@@ -21,6 +21,17 @@ public class Main {
             option = menu(); // Get user option
             IO.println();
 
+            /*
+            Person testP = new Person("Lakshmi", "MS", "MS",
+                LocalDate.of(1954, Month.MAY, 19));
+
+        List<Person> testParents = new ArrayList<>();
+        testParents.add(new Person("Richard", "Drew",
+                LocalDate.of(1918, 1, 1)));
+
+        testParents.add(new Person("Lacy", "Simmons",
+                LocalDate.of(1918, 7, 6)));
+             */
             // Perform action
             switch(option) {
                 case 1:
@@ -32,15 +43,19 @@ public class Main {
                     fts.addMarriage(scanner);
                     break;
                 case 3:
-                    IO.println("End a marriage");
-//                    fts.divorceSpouse();
+                    scanner.nextLine();
+                    fts.divorceSpouse(scanner);
                     break;
                 case 4:
-                    IO.println("Update death");
-//                    fts update a death
+                    scanner.nextLine();
+                    fts.addPersonDeathDate(scanner);
+                    break;
+                case 5:
+                    scanner.nextLine();
+                    fts.displayFamily(scanner);
                     break;
             }
-        } while (option != 5);
+        } while (option != 9);
 
         IO.println("Program Ended.");
     }
@@ -85,7 +100,8 @@ public class Main {
         IO.println("2 - Add a marriage");
         IO.println("3 - End a marriage");
         IO.println("4 - Update a death");
-        IO.println("5 - Exit");
+        IO.println("5 - Display A Family");
+        IO.println("9 - Exit");
 
         // Get option
         IO.print("\nEnter an option: ");

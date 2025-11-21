@@ -22,8 +22,7 @@ public class Person {
     List<Marriage> marriages;
 
     // Constructor
-    public Person(int id, String firstName, String lastName, LocalDate birthday) {
-        this.id = id;
+    public Person(String firstName, String lastName, LocalDate birthday) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -31,6 +30,16 @@ public class Person {
         parents = new ArrayList<>();
         marriages = new ArrayList<>();
         children = new ArrayList<>();
+    }
+
+    public Person(String firstName, String middleName, String lastName, LocalDate birthday) {
+        this.middleName = middleName;
+        this(firstName, lastName, birthday);
+    }
+
+    public Person(int id, String firstName, String lastName, LocalDate birthday) {
+        this.id = id;
+        this(firstName, lastName, birthday);
     }
 
     public Person(int id, String firstName, String middleName, String lastName,
@@ -51,6 +60,10 @@ public class Person {
     public LocalDate getBirthDate() { return this.birthday; }
 
     public int getId() { return this.id; }
+
+    public List<Person> getParents() { return this.parents; }
+
+    public List<Person> getChildren() { return this.children; }
 
     // Setters
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -83,17 +96,11 @@ public class Person {
     public String toString() {
         StringBuilder personStr = new StringBuilder(firstName);
         personStr.append(" ");
-        if (!middleName.isEmpty()) {
+        if (middleName != null && !middleName.isEmpty()) {
             personStr.append(middleName.charAt(0)).append(" ");
         }
         personStr.append(lastName);
 
         return new String(personStr);
-    }
-
-    // Returns string representation of the person
-    // the way they would look on a family tree
-    public String personOnTree() {
-        return this.toString() + this.birthday + "-";
     }
 }

@@ -9,7 +9,6 @@ import org.example.Repository.Repo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,8 +27,8 @@ public class FamilyTreeService {
     // Methods
     private void setUpDatabase(String tree) {
         ft = new FamilyTree(tree);
-        personService = new PersonService();
-        marriageService = new MarriageService();
+        personService = new PersonService(tree);
+        marriageService = new MarriageService(tree);
 
         // create schema and tables
         repo = new Repo(tree);
@@ -93,21 +92,12 @@ public class FamilyTreeService {
         IO.println(birthDate);
 
         // use this information to create a new person and add them
-        Person p = new Person(1, firstname, middlename, lastname, birthDate);
+        Person p = new Person(firstname, middlename, lastname, birthDate);
         personService.addPerson(p, parents);
     }
 
     // get information from user about marriage and create it
     public void addMarriage(Scanner scanner) {
-        // Get people being married
-        // Get marriage date
-
-        // add marriage
-        // create marriage object
-        // add person.id to marriage object
-        // add to person.marriages
-        // update database: add an entry to marriage table
-        // and add entries to person_marriage table
         IO.println("Adding a new marriage to the family tree");
 
         IO.println("Enter the full name of the partner on the tree:");
@@ -128,7 +118,65 @@ public class FamilyTreeService {
         IO.println("Enter the marriage date (YYYY-MM-DD):");
         LocalDate marriageDate = LocalDate.parse(scanner.nextLine());
 
-        // Delegate to service layer
+        // create marriage with marriage service
         marriageService.createMarriage(partner1Name, partner2Name, marriageDate);
+    }
+
+    // Get info from user and update marriage
+    public void divorceSpouse(Scanner scanner) {
+        // Ask user for name of person getting divorce
+        // Verify person exists on the tree
+        // Ask for divorce date
+        // marriageService.divorce(Person object, LocalDate divorceDate)
+    }
+
+    // Get info and update person
+    public void addPersonDeathDate(Scanner scanner) {
+        // Get person name from user
+        // Check user exists
+        // get person object
+        // Add LocalDate deathDate to Person
+        // personService.updateDeath(Person p);
+    }
+
+    // Display current tree
+    public void displayFamily(Scanner scanner) {
+        IO.println("Enter the full name of the person you want to see:");
+        String fullname = scanner.nextLine();
+        IO.println();
+
+        Person p = personService.getPerson(fullname);
+        if (p != null) {
+            // person exists
+
+            // print them
+            IO.println(p);
+
+            // print their parents
+            IO.println("Parents: ");
+            for (Person parent : p.getParents()) {
+                IO.println(parent);
+            }
+
+            // print their current marriage
+            IO.println("Marriage: ");
+            IO.println(marriageService.getCurrentMarriage(p.getFirstName(), p.getLastName()));
+
+            // print past marriages
+            IO.println("Any past marriages: ");
+            for (Marriage m : marriageService.getMarriages(p.getFirstName(), p.getLastName())) {
+                IO.println(m);
+            }
+
+            // print their children
+            IO.println("Children: ");
+            for (Person child : p.getChildren()) {
+                IO.println(child);
+            }
+
+            IO.println();
+        } else {
+            IO.println("This person is not on the family tree");
+        }
     }
 }

@@ -14,21 +14,14 @@ public class Marriage {
     public List<Person> partners;
 
     // Constructor
-    // TODO: person_marriage constructor
-    public Marriage(int id, Person person1, Person person2, LocalDate marriageDate) {
-        this.id = id;
-        this.partners = new ArrayList<>();
-
-        this.partners.add(person1);
-
-        this.partners.add(person2);
-
+    public Marriage(LocalDate marriageDate) {
         this.marriageDate = marriageDate;
+        partners = new ArrayList<>();
     }
 
     public Marriage(int id, LocalDate marriageDate) {
         this.id = id;
-        this.marriageDate = marriageDate;
+        this(marriageDate);
     }
 
     // Methods

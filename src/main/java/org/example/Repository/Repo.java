@@ -11,11 +11,12 @@ public class Repo {
     private static final String db_url = "jdbc:postgresql://localhost:5432/familytreedb";
     private static final String db_username = "postgres";
     private static final String db_password = "mysecretpassword";
-    private static String schema_name; // name of the family tree
+    private String schema_name; // name of the family tree
 
     // Constructor
     public Repo(String schema_name) {
-        Repo.schema_name = schema_name;
+        this.schema_name = schema_name;
+        IO.println("Schema -" + this.schema_name);
         seed();
     }
 
@@ -23,7 +24,6 @@ public class Repo {
     public static String URL() { return db_url; }
     public static String Username() { return db_username; }
     public static String Password() { return db_password; }
-    public static String Schema() { return schema_name; }
 
     private void seed() {
         schemaSeed();           // Create new schema
@@ -53,7 +53,7 @@ public class Repo {
         try (Connection connection = DriverManager.getConnection(db_url, db_username, db_password)) {
             try (Statement statement = connection.createStatement()) {
                 String sql = "CREATE TABLE IF NOT EXISTS " + schema_name + ".person (" +
-                        "id INT PRIMARY KEY," +
+                        "id SERIAL PRIMARY KEY," +
                         "firstname VARCHAR(20) NOT NULL," +
                         "middlename VARCHAR(20) DEFAULT ''," +
                         "lastname VARCHAR(20) NOT NULL," +
@@ -73,7 +73,7 @@ public class Repo {
         try (Connection connection = DriverManager.getConnection(db_url, db_username, db_password)) {
             try (Statement statement = connection.createStatement()) {
                 String sql = "CREATE TABLE IF NOT EXISTS " + schema_name + ".marriage (" +
-                        "id INT PRIMARY KEY," +
+                        "id SERIAL PRIMARY KEY," +
                         "startDate DATE NOT NULL," +
                         "endDate DATE" +
                         ");";

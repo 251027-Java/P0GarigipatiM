@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParentChildDAO {
+public class PersonMarriageDAO {
     // Fields
     private final String URL;
     private final String Username;
@@ -14,7 +14,7 @@ public class ParentChildDAO {
     private final String Schema;
 
     // Constructor
-    public ParentChildDAO(String tree) {
+    public PersonMarriageDAO(String tree) {
         // establish connection to db
         this.URL = Repo.URL();
         this.Username = Repo.Username();
@@ -23,15 +23,15 @@ public class ParentChildDAO {
     }
 
     // Methods
-    // Add new parent child relation
-    public boolean addParentChild(int parentID, int childId) {
-        String sql = "INSERT INTO " + Schema + ".parent_child(parent_id, child_id) " +
-                "VALUES (?, ?);";
+    // Add new person marriage relation
+    public boolean addPersonMarriage(int person_id, int marriage_id) {
+        String sql = "INSERT INTO " + Schema + ".person_marriage(person_id, " +
+                "marriage_id) VALUES (?, ?);";
 
         try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, parentID);
-                statement.setInt(2, childId);
+                statement.setInt(1, person_id);
+                statement.setInt(2, marriage_id);
                 statement.executeUpdate();
 
                 return true;
@@ -42,21 +42,21 @@ public class ParentChildDAO {
         return false;
     }
 
-    // Given the child id, get list of parents
-    public List<Integer> getParentsIDList(int childId) {
-        String sql = "SELECT * FROM " + Schema + ".parent_child WHERE child_id = ?;";
-        List<Integer> parents = new ArrayList<>();
+    // Given the person id, get list of marriages
+    public List<Integer> getMarriagesIDList(int personID) {
+        String sql = "SELECT * FROM " + Schema + ".person_marriage WHERE person_id = ?;";
+        List<Integer> marriages = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, childId);
+                statement.setInt(1, personID);
                 ResultSet rs = statement.executeQuery();
 
                 while (rs.next()) {
-                    int parentID = rs.getInt("parent_id");
-                    parents.add(parentID);
+                    int marriageID = rs.getInt("marriage_id");
+                    marriages.add(marriageID);
                 }
-                return parents;
+                return marriages;
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -64,21 +64,21 @@ public class ParentChildDAO {
         return null;
     }
 
-    // Given the parent id, get list of children
-    public List<Integer> getChildrenIDList(int parentID) {
-        String sql = "SELECT * FROM " + Schema + ".parent_child WHERE parent_id = ?;";
-        List<Integer> children = new ArrayList<>();
+    // Given the marriage id, get list of partners
+    public List<Integer> getPartnerIDList(int marriageID) {
+        String sql = "SELECT * FROM " + Schema + ".person_marriage WHERE marriage_id = ?;";
+        List<Integer> partners = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, parentID);
+                statement.setInt(1, marriageID);
                 ResultSet rs = statement.executeQuery();
 
                 while (rs.next()) {
-                    int childID = rs.getInt("child_id");
-                    children.add(parentID);
+                    int personID = rs.getInt("person_id");
+                    partners.add(personID);
                 }
-                return children;
+                return partners;
             }
         } catch(SQLException e) {
             e.printStackTrace();
