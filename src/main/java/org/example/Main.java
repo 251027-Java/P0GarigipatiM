@@ -20,18 +20,6 @@ public class Main {
         do {
             option = menu(); // Get user option
             IO.println();
-
-            /*
-            Person testP = new Person("Lakshmi", "MS", "MS",
-                LocalDate.of(1954, Month.MAY, 19));
-
-        List<Person> testParents = new ArrayList<>();
-        testParents.add(new Person("Richard", "Drew",
-                LocalDate.of(1918, 1, 1)));
-
-        testParents.add(new Person("Lacy", "Simmons",
-                LocalDate.of(1918, 7, 6)));
-             */
             // Perform action
             switch(option) {
                 case 1:

@@ -32,6 +32,7 @@ public class FamilyTreeService {
 
         // create schema and tables
         repo = new Repo(tree);
+        IO.println();
     }
 
     // get person information from user and add to tree

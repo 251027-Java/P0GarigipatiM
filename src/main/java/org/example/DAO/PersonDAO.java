@@ -30,7 +30,6 @@ public class PersonDAO {
         String sql = "INSERT INTO " + Schema + ".person(firstname, " +
                 "middlename, lastname, birthdate) VALUES (?, ?, ?, ?)";
 
-        IO.println("ad: " + Schema + person.toString() + person.getBirthDate());
         try (Connection connection = DriverManager.getConnection(URL, Username, Password);
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 

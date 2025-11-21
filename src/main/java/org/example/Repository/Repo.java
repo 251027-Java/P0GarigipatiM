@@ -16,7 +16,6 @@ public class Repo {
     // Constructor
     public Repo(String schema_name) {
         this.schema_name = schema_name;
-        IO.println("Schema -" + this.schema_name);
         seed();
     }
 
@@ -31,14 +30,11 @@ public class Repo {
         marriageSeed();         // Create new marriage table
         parentChildSeed();      // Create new parent_child table
         personMarriageSeed();   // Create person_marriage table
-
     }
 
     private void schemaSeed() {
         try (Connection connection = DriverManager.getConnection(db_url, db_username, db_password)) {
-            IO.println("1");
             try(Statement statement = connection.createStatement()) {
-                IO.println("2");
                 String sql = "CREATE SCHEMA IF NOT EXISTS " + schema_name;
                 statement.executeUpdate(sql);
                 System.out.println("Schema created or already exists: " + schema_name);
