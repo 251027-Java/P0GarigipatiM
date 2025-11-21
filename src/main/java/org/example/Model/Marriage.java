@@ -37,4 +37,9 @@ public class Marriage {
     public void divorce(LocalDate divorceDate) {
         this.divorceDate = divorceDate;
     }
+
+    @Override
+    public String toString() {
+        return "Marriage ID: " + id + ", Married: " + marriageDate;
+    }
 }

@@ -161,7 +161,10 @@ public class FamilyTreeService {
 
             // print their current marriage
             IO.println("Marriage: ");
-            IO.println(marriageService.getCurrentMarriage(p.getFirstName(), p.getLastName()));
+            Marriage current_m = marriageService.getCurrentMarriage(p.getFirstName(),
+                    p.getLastName());
+            IO.println(current_m);
+            IO.println();
 
             // print past marriages
             IO.println("Any past marriages: ");

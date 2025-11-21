@@ -56,11 +56,11 @@ public class MarriageDAO {
                 if (rs.next()) {
                     LocalDate startDate = rs.getDate("startDate").toLocalDate();
                     Date endDate = rs.getDate("endDate");
+                    Marriage m = new Marriage(id, startDate);
                     if (endDate != null) {
-                        Marriage m = new Marriage(id, startDate);
                         m.divorce(endDate.toLocalDate());
-                        return m;
                     }
+                    return m;
                 }
             }
         } catch(SQLException e) {
