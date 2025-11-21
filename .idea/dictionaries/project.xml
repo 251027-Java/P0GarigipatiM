@@ -4,6 +4,7 @@
       <w>familytreedb</w>
       <w>fullname</w>
       <w>mysecretpassword</w>
+      <w>persondao</w>
     </words>
   </dictionary>
 </component>
