@@ -11,7 +11,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RTest {
+public class RTTest {
     public static void main(String[] args) {
         String name = "test1";
 
