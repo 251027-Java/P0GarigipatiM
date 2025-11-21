@@ -25,11 +25,11 @@ public class Main {
             switch(option) {
                 case 1:
                     scanner.nextLine();
-                    fts.addChild(scanner);
+                    fts.addPerson(scanner);
                     break;
                 case 2:
-                    IO.println("Add a marriage");
-//                    fts.addMarriage();
+                    scanner.nextLine();
+                    fts.addMarriage(scanner);
                     break;
                 case 3:
                     IO.println("End a marriage");
@@ -81,10 +81,10 @@ public class Main {
 
         // Print menu
         IO.println("--- Menu ---");
-        IO.println("1 - Add a person (someone had kids)");
-        IO.println("2 - Add a marriage (someone got married)");
-        IO.println("3 - End a marriage (someone got divorced)");
-        IO.println("4 - Update a death (someone died)");
+        IO.println("1 - Add a person");
+        IO.println("2 - Add a marriage");
+        IO.println("3 - End a marriage");
+        IO.println("4 - Update a death");
         IO.println("5 - Exit");
 
         // Get option

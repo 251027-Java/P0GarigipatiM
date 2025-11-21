@@ -26,16 +26,14 @@ public class MarriageDAO {
     // Methods
     // add new marriage
     public boolean addMarriage(Marriage marriage) {
-        String sql = "INSERT INTO " + Schema + ".marriage (id, startDate, endDate) VALUES (?, ?, ?);";
+        String sql = "INSERT INTO " + Schema + ".marriage (id, startDate) VALUES (?, ?);";
 
         try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, marriage.getId());
                 statement.setDate(2, Date.valueOf(marriage.marriageDate));
-                // TODO: Address null pointer exception
-                statement.setDate(3, Date.valueOf(marriage.divorceDate));
-
                 statement.executeUpdate();
+
                 return true;
             }
         } catch (SQLException e) {
@@ -45,7 +43,7 @@ public class MarriageDAO {
     }
 
     // Get marriage from id
-    public Person getMarriage(int id) {
+    public Marriage getMarriage(int id) {
         String sql = "SELECT * FROM " + Schema + ".marriage WHERE marriage.id = ?;";
 
         try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
@@ -55,15 +53,52 @@ public class MarriageDAO {
 
                 if (rs.next()) {
                     LocalDate startDate = rs.getDate("startDate").toLocalDate();
-                    LocalDate endDate = rs.getDate("endDate").toLocalDate();
-
-                    //TODO: Fix this
-                    //return new Marriage(id, startDate, endDate);
+                    Date endDate = rs.getDate("endDate");
+                    if (endDate != null) {
+                        Marriage m = new Marriage(id, startDate);
+                        m.divorce(endDate.toLocalDate());
+                        return m;
+                    }
                 }
             }
         } catch(SQLException e) {
             IO.println("getMarriage FAILED: Person with that id doesn't exist?");
         }
         return null;
+    }
+
+    // Update Marriage by adding end date
+    public boolean updateMarriage(Marriage marriage) {
+        String sql = "UPDATE " + Schema + ".marriage SET endDate = ? WHERE id = ?;";
+
+        try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setDate(1, Date.valueOf(marriage.divorceDate));
+                statement.setInt(2, marriage.getId());
+
+                statement.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    // Delete marriage
+    public boolean deleteMarriage(int id) {
+        String sql = "DELETE FROM " + Schema + ".marriage WHERE id = ?;";
+
+        try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
+            try(PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, id);
+                statement.executeUpdate();
+                return true;
+            }
+        } catch(SQLException e) {
+            IO.println("Marriage deletion failed.");
+        }
+        return false;
     }
 }

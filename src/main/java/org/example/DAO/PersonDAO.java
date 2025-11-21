@@ -27,14 +27,15 @@ public class PersonDAO {
     // Add new person
     public boolean addPerson(Person person) {
         String sql = "INSERT INTO " + Schema + ".person(id, firstname, " +
-                "lastname, birthdate) VALUES (?, ?, ?, ?);";
+                "middlename, lastname, birthdate) VALUES (?, ?, ?, ?, ?);";
 
         try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, person.getId());
                 statement.setString(2, person.getFirstName());
-                statement.setString(3, person.getLastName());
-                statement.setDate(4, Date.valueOf(person.getBirthDate()));
+                statement.setString(3, person.getMiddleName());
+                statement.setString(4, person.getLastName());
+                statement.setDate(5, Date.valueOf(person.getBirthDate()));
 
                 statement.executeUpdate();
                 return true;
@@ -72,11 +73,22 @@ public class PersonDAO {
 
     // Update the person, but can't update birth
     public boolean updatePerson(Person person) {
-        // TODO: change the parameters, can't expect user to send in full person when
-        //  birth and other things might not change
+        String sql = "UPDATE " + Schema + ".person SET " +
+                "firstname = ?, middlename = ?, lastname = ? " +
+                "WHERE id = ?;";
+        try (Connection connection = DriverManager.getConnection(URL, Username, Password)) {
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, person.getFirstName());
+                statement.setString(2, person.getMiddleName());
+                statement.setString(3, person.getLastName());
+                statement.setInt(4, person.getId());
 
-        // update these fields in person where id/name matches
-        // return true if successful
+                statement.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

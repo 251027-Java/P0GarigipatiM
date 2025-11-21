@@ -9,13 +9,12 @@ public class Marriage {
     private int id;
 
     public LocalDate marriageDate;
-
-    private boolean activeMarriage; //TODO: is this necessary?
-
     public LocalDate divorceDate; // Is null by default
+
     public List<Person> partners;
 
     // Constructor
+    // TODO: person_marriage constructor
     public Marriage(int id, Person person1, Person person2, LocalDate marriageDate) {
         this.id = id;
         this.partners = new ArrayList<>();
@@ -25,7 +24,11 @@ public class Marriage {
         this.partners.add(person2);
 
         this.marriageDate = marriageDate;
-        this.activeMarriage = true;
+    }
+
+    public Marriage(int id, LocalDate marriageDate) {
+        this.id = id;
+        this.marriageDate = marriageDate;
     }
 
     // Methods
@@ -40,6 +43,5 @@ public class Marriage {
     // divorce the marriage
     public void divorce(LocalDate divorceDate) {
         this.divorceDate = divorceDate;
-        this.activeMarriage = false;
     }
 }

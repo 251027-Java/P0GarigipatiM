@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Person {
     // Fields
-    // TODO: make id static or auto-increment
     private int id;
     private String firstName;
     private String middleName;
@@ -21,9 +20,6 @@ public class Person {
 
     // Spouse(s) Relations
     List<Marriage> marriages;
-
-    // TODO: decide how middle names and Roman numerals will work and add parents in
-    //  constructor
 
     // Constructor
     public Person(int id, String firstName, String lastName, LocalDate birthday) {
