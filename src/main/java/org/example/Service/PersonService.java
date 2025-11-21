@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PersonService {
     // Fields
-    private PersonDAO personDAO;
+    private final PersonDAO personDAO;
 
     // Constructor
     public PersonService() {
@@ -16,14 +16,12 @@ public class PersonService {
 
     // Methods
     public Person getPerson(String fullname) {
-        // Split fullname
         String[] split = fullname.split(" ");
-
         return personDAO.getPerson(split[0], split[1]);
     }
 
     public boolean personExists(String fullname) {
-        return (getPerson(fullname) != null);
+        return (this.getPerson(fullname) != null);
     }
 
     public void addPerson(Person p, List<Person> parents) {

@@ -47,24 +47,33 @@ public class Main {
 
     // Get tree name from user
     public static String getTreeName() {
-        // TODO: add try-catch and input validation
+        while (true) {
+            try {
+                // Ask user if they want to create a new tree or use an existing tree
+                IO.println("Do you want to create a new family tree or look at an " +
+                        "existing tree?\nPlease enter name of family tree that already exists " +
+                        "or 'new' for a new family tree.");
 
-        // Ask user if they want to create a new tree or use an existing tree
-        IO.println("Do you want to create a new family tree or look at an " +
-                "existing tree?\nPlease enter name of family tree that already exists " +
-                "or 'new' for a new family tree.");
-        IO.print("Enter here: ");
-        String tree = scanner.next();
-        IO.println();
+                IO.print("Enter here: ");
+                String tree = scanner.next();
+                IO.println();
 
-        // Get name of new tree
-        if(tree.equalsIgnoreCase("new")) {
-            IO.println("Please enter the last name of this family as the name of the " +
-                    "family tree (input should be one word.");
-            tree = scanner.next();
+                // Get name of new tree
+                if (tree.equalsIgnoreCase("new")) {
+                    IO.println("Please enter the last name of this family as the name of the " +
+                            "family tree (input should be one word.");
+                    tree = scanner.next();
+                }
+
+                if (!tree.matches("[A-Za-z]+")) {
+                    throw new IllegalArgumentException("Invalid family tree name: " + tree);
+                } else {
+                    return tree;
+                }
+            } catch (IllegalArgumentException e) {
+                IO.println(e);
+            }
         }
-
-        return tree;
     }
 
     // Print menu and get user's option

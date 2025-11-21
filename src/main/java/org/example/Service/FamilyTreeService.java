@@ -5,8 +5,8 @@ import org.example.DAO.PersonDAO;
 import org.example.Model.FamilyTree;
 import org.example.Model.Marriage;
 import org.example.Model.Person;
+import org.example.Repository.Repo;
 
-import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +15,7 @@ public class FamilyTreeService {
     // Fields
     private FamilyTree ft;
     private PersonService personService;
+    private Repo repo;
 
     // Constructors
     public FamilyTreeService(String tree) {
@@ -28,6 +29,7 @@ public class FamilyTreeService {
 
         // create schema if doesn't exist
         // create tables if they don't exist
+        repo = new Repo(tree);
     }
 
     // get person information from user and add to tree
